@@ -17,16 +17,16 @@ sequelize.authenticate()
     console.log("Authenticate vayo")
 })
 .catch((err) =>{
-    console.log("Erroe aayo " + err)
+    console.log("Error aayo " + err)
+})
+
+sequelize.sync({ force: true }).then(() => {
+    console.log("Database synced successfully!");
+}).catch(error => {
+    console.error("Error syncing database:", error);
 })
 
 
-//migrate garnu parxa / push garnu parxa 
-
-sequelize.sync({force : true})
-    .then(() => {
-        console.log("migrate vayo")
-    })
 
 
 export default sequelize
