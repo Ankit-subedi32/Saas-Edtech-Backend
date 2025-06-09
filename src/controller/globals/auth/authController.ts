@@ -65,6 +65,9 @@ email login (SSO)
 */
 
 class AuthController{
+   static loginUser(loginUser: any) {
+       throw new Error("Method not implemented.")
+   }
    static async registerUser(req:Request,res:Response){
     if(req.body == undefined){
         console.log("triggereed")
