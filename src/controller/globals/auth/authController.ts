@@ -19,7 +19,7 @@ RESET PASSWORD/ OTP
 import {Request,Response} from "express"
 import User from "../../../database/models/userModel"
 import bcrypt from "bcrypt"
-
+import jwt from 'jsonwebtoken'
 // json data --> req.body // username,email,password 
 // files --> req.file // files
 // const registerUser = async (req:Request,res:Response)=>{
@@ -48,20 +48,21 @@ import bcrypt from "bcrypt"
 // } // function 
 // BOLA Attack
 
+/*
+login flow : 
+email/username, password (basic)
+email , password -- data accept --> validation --> 
+// first check email exist or not (verify) --> yes --> check password now --> mil0--> 
+token generation (jsonwebtoken)
 
-/**
- login flow :
- email/username and password (basic)
-email and password(data accept )--> validaition -->
-//first check email exist or not (verify) --> yes --> check password --> milyo vanya token(jsonwebtoken) jeneraton garn a parxa -->
---> no --> not registered
+--> now --> not registered 
 
 
- google login ,facebook ,github(auth)
- email login (SSO)
 
- */
+google login, fb, github (oauth)
+email login (SSO)
 
+*/
 
 class AuthController{
    static async registerUser(req:Request,res:Response){
@@ -90,54 +91,64 @@ class AuthController{
      // insert into Users table 
      await User.create({
          username :username, 
-         password : bcrypt.hashSync(password,12), 
+         password : bcrypt.hashSync(password,12),         //blowfish algorithm
          email : email
      })
      res.status(201).json({
          message : "User registered successfully"
      })
    }
-
    async loginUser(req:Request,res:Response){
-    const {email,password} = req.body
-    if(!email || !password) {
+    const {email,password} = req.body 
+    if(!email || !password){
         res.status(400).json({
-            message : "Please provide email,password"
+            message : "Please provide email,password "
         })
-        return 
+        return
     }
-
-    //check if email exit or not in our table 
+    // check if email exist or not in our users table
     const data = await User.findAll({
         where : {
-                email
+            email
         }
-    })
-    //seletc * from User where email ="ankit@gmail.com" AND age == 23
-    if(data.length == 0 ){
+    }) 
+    // select * from User where email="manish@gmail.com" AND age = 22
+    if(data.length ==0){
         res.status(404).json({
-            message : "Not registered"
+            message : "Not registered!!"
         })
-
-    }
-    else{
-        //check password , ankit123 (hanyako password ) --> hash conversion --> fsdkjjshguy
-        //compare (plain passsword) user bata aako password ,hashed password register huda
-        const isPasswordMatch = bcrypt.compareSync(password,data[0].password)
-        if(isPasswordMatch){
-            //login vayo ,token generate garnu paryo
-            
-
-        }else {
-            res.status(403).json({
-                message : " Invalid Email or passsword "
+    }else{
+        // check password , nepal123 --> hash conversion --> fsdkjfsdfjsd
+        // compare(plain password user bata aako password, hashed password register huda table ma baseko)
+         const isPasswordMatch = bcrypt.compareSync(password,data[0].password)
+         if(isPasswordMatch){
+            // login vayo , token generation 
+           const token =  jwt.sign({id :data[0].id },"thisissecrethai",{
+                expiresIn : "90d"
             })
-        }
+            res.status(200).json({
+                token : token,
+                message : "Login successful"
+            })
+         }else{
+            res.status(403).json({
+                message : "Invalid email or password"
+            })
+         }
+
     }
    }
+   
 }
+
+
 
 export default AuthController
 
 
 // export  {registerUser}
+
+
+
+// token(jwt), session
+// cookie, localstorage
