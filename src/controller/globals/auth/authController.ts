@@ -65,9 +65,6 @@ email login (SSO)
 */
 
 class AuthController{
-   static loginUser(loginUser: any) {
-       throw new Error("Method not implemented.")
-   }
    static async registerUser(req:Request,res:Response){
     if(req.body == undefined){
         console.log("triggereed")
@@ -94,14 +91,14 @@ class AuthController{
      // insert into Users table 
      await User.create({
          username :username, 
-         password : bcrypt.hashSync(password,12),         //blowfish algorithm
+         password : bcrypt.hashSync(password,12), //blowfish
          email : email
      })
      res.status(201).json({
          message : "User registered successfully"
      })
    }
-   async loginUser(req:Request,res:Response){
+   static async loginUser(req:Request,res:Response){
     const {email,password} = req.body 
     if(!email || !password){
         res.status(400).json({
@@ -115,6 +112,26 @@ class AuthController{
             email
         }
     }) 
+    /*
+    numbers = [1]
+    numbers[0]
+    data = [
+    {
+    email : "manish@gmail.com", 
+    username : "manish", 
+    password : "jldsjfslkfj3423423"
+    }, 
+     {
+    email : "manish@gmail.com", 
+    username : "manish", 
+    haha : "hehe"
+    }
+    ]
+    data[0].password 
+    data[1].haha
+
+
+    */
     // select * from User where email="manish@gmail.com" AND age = 22
     if(data.length ==0){
         res.status(404).json({
@@ -126,12 +143,12 @@ class AuthController{
          const isPasswordMatch = bcrypt.compareSync(password,data[0].password)
          if(isPasswordMatch){
             // login vayo , token generation 
-           const token =  jwt.sign({id :data[0].id },"thisissecrethai",{
-                expiresIn : "90d"
-            })
+           const token =  jwt.sign({id :data[0].id},'thisissecret',{
+            expiresIn : "30d"
+           })
             res.status(200).json({
-                token : token,
-                message : "Login successful"
+                token : token, 
+                message : "Logged in success"
             })
          }else{
             res.status(403).json({
