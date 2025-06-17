@@ -61,12 +61,7 @@ const isLoggedIn = async (req:IExtendedRequest,res:Response,next:NextFunction)=>
                 })
             }else{
                
-                req.user = {
-                    id: userData.id,
-                    email: userData.email,
-                    role: userData.role,
-                    userName: userData.username || null
-                }
+                req.user = userData
                 next()
             }
         }

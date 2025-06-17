@@ -19,7 +19,7 @@ class User extends Model{
         type : DataType.STRING, 
    
     })
-    declare username : string 
+    declare userName : string 
 
     @Column({
         type : DataType.STRING
@@ -40,7 +40,17 @@ class User extends Model{
     @Column({
         type : DataType.STRING
     })
-    declare currentInstituteNumber : string
+    declare currentInstituteNumber : string 
+
+    /* 
+
+    manish 
+    digital pathshala --> 12345
+    hahahehe --> 67890
+
+    */
+
+
 }
 
 export default User 
