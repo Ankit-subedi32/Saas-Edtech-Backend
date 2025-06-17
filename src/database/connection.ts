@@ -23,7 +23,7 @@ sequelize.authenticate()
 })
 
 // migrate garnu parxa/ push garnu parxa 
-sequelize.sync({ force : false }) // force true gareko vani sabai table haru lai delete garera feri create garne, false gareko vani table haru lai delete nagari matra check garne
+sequelize.sync({ alter : false }) // force true gareko vani sabai table haru lai delete garera feri create garne, false gareko vani table haru lai delete nagari matra check garne
 .then(()=>{
     console.log("migrated successfully new changes")
 })

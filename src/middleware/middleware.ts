@@ -47,6 +47,7 @@ const isLoggedIn = async (req:IExtendedRequest,res:Response,next:NextFunction)=>
         //         }
         //     })
             const userData = await User.findByPk(resultaayo.id)
+            
             /*
 
             userData = {
