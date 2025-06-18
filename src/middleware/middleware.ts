@@ -46,14 +46,14 @@ const isLoggedIn = async (req:IExtendedRequest,res:Response,next:NextFunction)=>
         //             id : resultaayo.id
         //         }
         //     })
-            const userData = await User.findByPk(resultaayo.id)
-            
+            const userData = await User.findByPk(resultaayo.id,{
+                attributes : ['id','currentInstituteNumber']
+            })
             /*
 
             userData = {
-                username : "", 
-                password : "", 
-                email : "", 
+                id  : "", 
+                currentInstituteNumber : ""
                             }
             */
             if(!userData){
@@ -61,7 +61,6 @@ const isLoggedIn = async (req:IExtendedRequest,res:Response,next:NextFunction)=>
                     message : "No user with that id, invalid token "
                 })
             }else{
-               
                 req.user = userData
                 next()
             }
