@@ -6,8 +6,8 @@ import { IExtendedRequest } from "../../../middleware/types";
 
 const createCourse = async (req:IExtendedRequest,res:Response)=>{
     const instituteNumber = req.user?.currentInstituteNumber
-const {coursePrice, courseName,courseDescription, courseDuration, courseLevel } = req.body 
-if(!coursePrice || !courseName || !courseDescription || !courseDuration || !courseLevel){
+const {coursePrice, courseName,courseDescription, courseDuration, courseLevel,categoryId } = req.body 
+if(!coursePrice || !courseName || !courseDescription || !courseDuration || !courseLevel || !categoryId){
     return res.status(400).json({
         messsage : "Please provide coursePrice, courseName, courseDescription, courseDuration, courseLevel"
     })
@@ -16,8 +16,8 @@ if(!coursePrice || !courseName || !courseDescription || !courseDuration || !cour
 const courseThumbnail = req.file ? req.file.path : null
 console.log(courseThumbnail,"coursethumnail")
 
-const returnedData = await sequelize.query(`INSERT INTO course_${instituteNumber}(coursePrice,courseName,courseDescription,courseDuration,courseLevel,courseThumbnail) VALUES(?,?,?,?,?,?)`,{
-    replacements : [coursePrice, courseName,courseDescription,courseDuration,courseLevel,courseThumbnail]
+const returnedData = await sequelize.query(`INSERT INTO course_${instituteNumber}(coursePrice,courseName,courseDescription,courseDuration,courseLevel,courseThumbnail,categoryId) VALUES(?,?,?,?,?,?,?)`,{
+    replacements : [coursePrice, courseName,courseDescription,courseDuration,courseLevel,courseThumbnail, categoryId]
 })
 
 console.log(returnedData)
@@ -51,7 +51,7 @@ const deleteCourse = async(req:IExtendedRequest,res:Response)=>{
 
 const getAllCourse = async (req:IExtendedRequest,res:Response)=>{
     const instituteNumber = req.user?.currentInstituteNumber; 
-    const courses = await sequelize.query(`SELECT * FROM course_${instituteNumber}`)
+    const courses = await sequelize.query(`SELECT * FROM course_${instituteNumber} Join category_${instituteNumber} ON course_${instituteNumber}.categoryId = category_${instituteNumber}.id`)
     res.status(200).json({
         message : "Course fetched", 
         data : courses 
