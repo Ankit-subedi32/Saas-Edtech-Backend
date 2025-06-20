@@ -44,7 +44,7 @@ class User extends Model{
 
     /* 
 
-    manish 
+    Ankit 
     digital pathshala --> 12345
     hahahehe --> 67890
 

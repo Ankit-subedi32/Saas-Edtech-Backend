@@ -118,13 +118,13 @@ class AuthController{
     numbers[0]
     data = [
     {
-    email : "manish@gmail.com", 
-    username : "manish", 
+    email : "Ankit@gmail.com", 
+    username : "Ankit", 
     password : "jldsjfslkfj3423423"
     }, 
      {
-    email : "manish@gmail.com", 
-    username : "manish", 
+    email : "Ankit@gmail.com", 
+    username : "Ankit", 
     haha : "hehe"
     }
     ]
@@ -133,7 +133,7 @@ class AuthController{
 
 
     */
-    // select * from User where email="manish@gmail.com" AND age = 22
+    // select * from User where email="Ankit@gmail.com" AND age = 22
     if(data.length ==0){
         res.status(404).json({
             message : "Not registered!!"
